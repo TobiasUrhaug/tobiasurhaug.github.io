@@ -232,7 +232,7 @@ main {
     transition: max-height 0.5s ease;
 }
 
-.accordion-item.open .accordion-body { max-height: 900px; }
+.accordion-item.open .accordion-body { max-height: 3000px; }
 
 .accordion-body-inner {
     padding: var(--accordion-body-padding);
@@ -271,11 +271,32 @@ main {
     margin-bottom: 1.6rem;
 }
 
+.tracklist {
+    list-style: none;
+    padding-left: 0;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    line-height: 2;
+    margin-bottom: 1.6rem;
+}
+
+.track-num {
+    color: var(--mid);
+    margin-right: 0.5em;
+}
+
 .release-player iframe {
     width: 100%;
-    height: 120px;
+    height: 274px;
     border: 0;
     display: block;
+}
+
+.release-covers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .release-cover {
@@ -355,6 +376,11 @@ footer {
     .col-meta { display: none; }
 
     .release-body-inner { grid-template-columns: 1fr; }
+
+    .release-covers {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
 
     .release-cover { max-width: 200px; }
 
