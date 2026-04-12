@@ -7,384 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --ink: #1a1a18;
-            --paper: #ffffff;
-            --mid: #6b6b68;
-            --rule: #c8c6be;
-        }
-
-        section {
-            display: none;
-        }
-
-        section.active {
-            display: block;
-            padding-top: 4rem;
-        }
-
-        body {
-            background-color: var(--paper);
-            color: var(--ink);
-            font-family: 'Courier Prime', 'Courier New', monospace;
-            font-size: 15px;
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ── Header ───────────────────────────────────────────── */
-
-        header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 4rem 2rem 0;
-        }
-
-        .logo-wrap {
-            width: 260px;
-            margin-bottom: 2.5rem;
-        }
-
-        .logo-wrap img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* ── Navigation ───────────────────────────────────────── */
-
-        hr.rule {
-            width: 100%;
-            max-width: 680px;
-            border: none;
-            border-top: 1px solid var(--ink);
-            margin: 0 auto;
-        }
-
-        hr.rule-thin {
-            width: 100%;
-            max-width: 680px;
-            border: none;
-            border-top: 1px solid var(--rule);
-            margin: 0 auto;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            padding: 1.1rem 2rem;
-            max-width: 680px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        nav a {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ink);
-            text-decoration: none;
-            padding: 0 2rem;
-            transition: color 0.2s ease;
-            border-right: 1px solid var(--rule);
-        }
-
-        nav a:first-child {
-            padding-left: 0;
-        }
-
-        nav a:last-child {
-            border-right: none;
-        }
-
-        nav a:hover {
-            color: var(--mid);
-        }
-
-        nav a.active {
-            color: var(--ink);
-            text-decoration: underline;
-            text-underline-offset: 4px;
-        }
-
-        /* ── Main ─────────────────────────────────────────────── */
-
-        main {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 0 2rem 8rem;
-        }
-
-        /* ── Section shared ───────────────────────────────────── */
-
-        .section-label {
-            font-family: 'Courier Prime', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            color: var(--mid);
-            margin-bottom: 1.8rem;
-        }
-
-        h2 {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 2rem;
-            font-weight: 400;
-            line-height: 1.2;
-            margin-bottom: 1.2rem;
-        }
-
-        p {
-            font-family: 'Courier Prime', monospace;
-            font-size: 14px;
-            line-height: 1.85;
-            color: #3a3a38;
-            max-width: 54ch;
-        }
-
-        p + p {
-            margin-top: 1rem;
-        }
-
-        /* ── About ───────────────────────────────────────────── */
-
-        #about .bio-text {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 1.05rem;
-            line-height: 1.75;
-            color: var(--ink);
-            max-width: 58ch;
-        }
-
-        /* ── Releases ─────────────────────────────────────────── */
-
-        .release-list {
-            list-style: none;
-            margin-top: 0.5rem;
-        }
-
-        .release-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: baseline;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--rule);
-        }
-
-        .release-item:first-child {
-            border-top: 1px solid var(--rule);
-        }
-
-        .release-title {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 1.05rem;
-            font-style: italic;
-        }
-
-        .release-meta {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            color: var(--mid);
-            white-space: nowrap;
-        }
-
-        .release-cat {
-            font-family: 'Courier Prime', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            color: var(--mid);
-            text-transform: uppercase;
-        }
-
-        /* ── Mixes ────────────────────────────────────────────── */
-
-        .mix-list {
-            list-style: none;
-        }
-
-        .mix-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: baseline;
-            gap: 1.2rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--rule);
-        }
-
-        .mix-item:first-child {
-            border-top: 1px solid var(--rule);
-        }
-
-        .mix-num {
-            font-family: 'Courier Prime', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            color: var(--rule);
-            min-width: 2ch;
-            text-align: right;
-        }
-
-        .mix-title {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 1.05rem;
-            font-style: italic;
-        }
-
-        .mix-date {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            color: var(--mid);
-            white-space: nowrap;
-        }
-
-        /* ── Gigs ─────────────────────────────────────────────── */
-
-        .gig-list {
-            list-style: none;
-        }
-
-        .gig-item {
-            display: grid;
-            grid-template-columns: 6rem 1fr auto;
-            align-items: baseline;
-            gap: 1.5rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--rule);
-        }
-
-        .gig-item:first-child {
-            border-top: 1px solid var(--rule);
-        }
-
-        .gig-date {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            color: var(--ink);
-            white-space: nowrap;
-        }
-
-        .gig-venue {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 1.05rem;
-        }
-
-        .gig-location {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            color: var(--mid);
-            white-space: nowrap;
-        }
-
-        .gig-item.past .gig-date,
-        .gig-item.past .gig-venue,
-        .gig-item.past .gig-location {
-            color: var(--rule);
-        }
-
-        /* ── Footer ───────────────────────────────────────────── */
-
-        footer {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 2rem 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-name {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 0.85rem;
-            font-style: italic;
-            color: var(--mid);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-links a {
-            font-family: 'Courier Prime', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--mid);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--ink);
-        }
-
-        /* ── Mobile ───────────────────────────────────────────── */
-
-        @media (max-width: 520px) {
-            header {
-                padding-top: 3rem;
-            }
-
-            .logo-wrap {
-                width: 180px;
-            }
-
-            nav {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                padding: 0.7rem 1rem;
-                gap: 0;
-            }
-
-            nav a {
-                flex: 1;
-                text-align: center;
-                padding: 0;
-                font-size: 9px;
-                letter-spacing: 0.12em;
-                border-right: 1px solid var(--rule);
-            }
-
-            nav a:last-child {
-                border-right: none;
-            }
-
-            .gig-item {
-                grid-template-columns: 5rem 1fr;
-            }
-
-            .gig-location {
-                display: none;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -392,135 +15,249 @@
         <div class="logo-wrap">
             <img src="images/RoundLogo.jpg" alt="O.M.Theorem">
         </div>
-        <hr class="rule">
         <nav>
-            <a href="#" data-section="about">About</a>
+            <a href="#" data-section="news">News</a>
             <a href="#" data-section="releases">Releases</a>
             <a href="#" data-section="mixes">Mixes</a>
             <a href="#" data-section="gigs">Gigs</a>
+            <a href="#" data-section="about">About</a>
         </nav>
-        <hr class="rule">
     </header>
 
     <main>
 
-        <!-- ── About ──────────────────────────────────────────── -->
-        <section id="about">
-            <p class="section-label">About</p>
-            <p class="bio-text">
-                O.M.Theorem is a music project rooted in the intersection of analogue
-                texture and electronic structure. Running an independent label, the project
-                spans records, live performances at festivals and clubs, and a continuing
-                series of mixes.
-            </p>
-            <p class="bio-text" style="margin-top: 1.2rem;">
-                The work moves between the dancefloor and the listening room — patient,
-                considered, and built to last.
+        <!-- ── News ───────────────────────────────────────────── -->
+        <section id="news">
+            <p class="page-text">
+                News placeholder text.
             </p>
         </section>
 
         <!-- ── Releases ───────────────────────────────────────── -->
         <section id="releases">
-            <p class="section-label">Releases</p>
-            <ul class="release-list">
-                <li class="release-item">
-                    <div>
-                        <div class="release-title">Title of Release</div>
-                        <div class="release-cat">OMT-004 &nbsp;·&nbsp; LP</div>
+
+            <!-- OMT-001 -->
+            <div class="accordion-item">
+                <button class="table-row release-cols" aria-expanded="false">
+                    <span class="col-key">OMT-001</span>
+                    <span class="col-title">Lemma</span>
+                    <span class="col-format">12"</span>
+                    <span class="col-meta">2021</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="release-body-inner">
+                        <div class="release-info">
+                            <p>Two long-form pieces, each occupying a full side. Recorded live to analogue tape in a single session — no edits, no overdubs. The A-side moves through slow percussive cycles; the B-side dissolves into sustained tonal drift.</p>
+                            <div class="release-player">
+                                <iframe src="https://bandcamp.com/EmbeddedPlayer/album=ALBUM_ID/size=small/bgcol=ffffff/linkcol=1a1a18/transparent=true/" seamless></iframe>
+                            </div>
+                        </div>
+                        <img class="release-cover" src="images/lemma1.jpg" alt="Lemma">
                     </div>
-                    <div class="release-meta">2024</div>
-                </li>
-                <li class="release-item">
-                    <div>
-                        <div class="release-title">Another Record</div>
-                        <div class="release-cat">OMT-003 &nbsp;·&nbsp; 12"</div>
+                </div>
+            </div>
+
+            <!-- OMT-002 -->
+            <div class="accordion-item">
+                <button class="table-row release-cols" aria-expanded="false">
+                    <span class="col-key">OMT-002</span>
+                    <span class="col-title">Lemma II</span>
+                    <span class="col-format">12"</span>
+                    <span class="col-meta">2022</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="release-body-inner">
+                        <div class="release-info">
+                            <p>A second inquiry into the same territory, arrived at by different means. Where the first record trusted silence, this one works with density — layered rhythmic structures that build and collapse across both sides.</p>
+                            <div class="release-player">
+                                <iframe src="https://bandcamp.com/EmbeddedPlayer/album=ALBUM_ID/size=small/bgcol=ffffff/linkcol=1a1a18/transparent=true/" seamless></iframe>
+                            </div>
+                        </div>
+                        <img class="release-cover" src="images/lemma2-label-picture-bc.jpg" alt="Lemma II">
                     </div>
-                    <div class="release-meta">2023</div>
-                </li>
-                <li class="release-item">
-                    <div>
-                        <div class="release-title">Earlier Work</div>
-                        <div class="release-cat">OMT-002 &nbsp;·&nbsp; EP</div>
-                    </div>
-                    <div class="release-meta">2022</div>
-                </li>
-                <li class="release-item">
-                    <div>
-                        <div class="release-title">First Offering</div>
-                        <div class="release-cat">OMT-001 &nbsp;·&nbsp; 12"</div>
-                    </div>
-                    <div class="release-meta">2021</div>
-                </li>
-            </ul>
+                </div>
+            </div>
+
         </section>
 
         <!-- ── Mixes ──────────────────────────────────────────── -->
         <section id="mixes">
-            <p class="section-label">Mixes</p>
-            <ul class="mix-list">
-                <li class="mix-item">
-                    <span class="mix-num">06</span>
-                    <span class="mix-title">Mix Title or Series Name</span>
-                    <span class="mix-date">Mar 2024</span>
-                </li>
-                <li class="mix-item">
-                    <span class="mix-num">05</span>
-                    <span class="mix-title">Another Mix Series</span>
-                    <span class="mix-date">Nov 2023</span>
-                </li>
-                <li class="mix-item">
-                    <span class="mix-num">04</span>
-                    <span class="mix-title">Podcast Guest Appearance</span>
-                    <span class="mix-date">Jul 2023</span>
-                </li>
-                <li class="mix-item">
-                    <span class="mix-num">03</span>
-                    <span class="mix-title">Mix Title</span>
-                    <span class="mix-date">Feb 2023</span>
-                </li>
-                <li class="mix-item">
-                    <span class="mix-num">02</span>
-                    <span class="mix-title">Early Mix</span>
-                    <span class="mix-date">Sep 2022</span>
-                </li>
-                <li class="mix-item">
-                    <span class="mix-num">01</span>
-                    <span class="mix-title">First Recording</span>
-                    <span class="mix-date">Apr 2022</span>
-                </li>
-            </ul>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">06</span>
+                    <span class="col-title">Mix Title or Series Name</span>
+                    <span class="col-meta">Mar 2024</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">05</span>
+                    <span class="col-title">Another Mix Series</span>
+                    <span class="col-meta">Nov 2023</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">04</span>
+                    <span class="col-title">Podcast Guest Appearance</span>
+                    <span class="col-meta">Jul 2023</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">03</span>
+                    <span class="col-title">Mix Title</span>
+                    <span class="col-meta">Feb 2023</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">02</span>
+                    <span class="col-title">Early Mix</span>
+                    <span class="col-meta">Sep 2022</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row mix-cols" aria-expanded="false">
+                    <span class="col-key">01</span>
+                    <span class="col-title">First Recording</span>
+                    <span class="col-meta">Apr 2022</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Mix description placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <!-- ── Gigs ───────────────────────────────────────────── -->
         <section id="gigs">
-            <p class="section-label">Gigs</p>
-            <ul class="gig-list">
-                <li class="gig-item">
-                    <span class="gig-date">May 2025</span>
-                    <span class="gig-venue">Venue Name, Festival</span>
-                    <span class="gig-location">City, Country</span>
-                </li>
-                <li class="gig-item">
-                    <span class="gig-date">Mar 2025</span>
-                    <span class="gig-venue">Club Night</span>
-                    <span class="gig-location">City, Country</span>
-                </li>
-                <li class="gig-item past">
-                    <span class="gig-date">Dec 2024</span>
-                    <span class="gig-venue">Festival Stage</span>
-                    <span class="gig-location">City, Country</span>
-                </li>
-                <li class="gig-item past">
-                    <span class="gig-date">Oct 2024</span>
-                    <span class="gig-venue">Venue Name</span>
-                    <span class="gig-location">City, Country</span>
-                </li>
-                <li class="gig-item past">
-                    <span class="gig-date">Aug 2024</span>
-                    <span class="gig-venue">Summer Festival</span>
-                    <span class="gig-location">City, Country</span>
-                </li>
-            </ul>
+
+            <div class="accordion-item">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">May 2025</span>
+                    <span class="col-title">Venue Name, Festival</span>
+                    <span class="col-meta">City, Country</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Gig details placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">Mar 2025</span>
+                    <span class="col-title">Club Night</span>
+                    <span class="col-meta">City, Country</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Gig details placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item past">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">Dec 2024</span>
+                    <span class="col-title">Festival Stage</span>
+                    <span class="col-meta">City, Country</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Gig details placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item past">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">Oct 2024</span>
+                    <span class="col-title">Venue Name</span>
+                    <span class="col-meta">City, Country</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Gig details placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item past">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">Aug 2024</span>
+                    <span class="col-title">Summer Festival</span>
+                    <span class="col-meta">City, Country</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        <p>Gig details placeholder.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ── About ──────────────────────────────────────────── -->
+        <section id="about">
+            <p class="page-text">
+                O.M.Theorem is a music project rooted in the intersection of analogue
+                texture and electronic structure. Running an independent label, the project
+                spans records, live performances at festivals and clubs, and a continuing
+                series of mixes.
+            </p>
+            <p class="page-text">
+                The work moves between the dancefloor and the listening room — patient,
+                considered, and built to last.
+            </p>
         </section>
 
     </main>
@@ -528,7 +265,6 @@
     <hr class="rule-thin" style="max-width: 680px; margin: 0 auto;">
 
     <footer>
-        <span class="footer-name">O.M.Theorem</span>
         <div class="footer-links">
             <a href="#">Bandcamp</a>
             <a href="#">Soundcloud</a>
@@ -552,8 +288,26 @@
             });
         });
 
-        // default to about
-        show('about');
+        // default to news
+        show('news');
+
+        // ── Accordion ─────────────────────────────────────────
+        document.querySelectorAll('.accordion-item .table-row').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.accordion-item');
+                const isOpen = item.classList.contains('open');
+
+                document.querySelectorAll('.accordion-item.open').forEach(other => {
+                    if (other !== item) {
+                        other.classList.remove('open');
+                        other.querySelector('.table-row').setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                item.classList.toggle('open', !isOpen);
+                btn.setAttribute('aria-expanded', String(!isOpen));
+            });
+        });
     </script>
 
 </body>
