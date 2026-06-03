@@ -16,16 +16,34 @@ navLinks.forEach(a => {
 // default to news
 show('news');
 
-// ── Past gigs ─────────────────────────────────────────
+// ── Past gigs & next gig bar ──────────────────────────
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-document.querySelectorAll('.accordion-item').forEach(item => {
+let nextGig = null;
+
+document.querySelectorAll('#gigs .accordion-item').forEach(item => {
     const keyEl = item.querySelector('.col-key');
     if (!keyEl) return;
     const date = new Date(keyEl.textContent.trim());
-    if (!isNaN(date) && date < today) item.classList.add('past');
+    if (isNaN(date)) return;
+    if (date < today) {
+        item.classList.add('past');
+    } else if (!nextGig || date < nextGig.date) {
+        nextGig = { date, item };
+    }
 });
+
+const nextGigBar = document.getElementById('next-gig-bar');
+if (nextGigBar && nextGig) {
+    const title   = nextGig.item.querySelector('.col-title')?.textContent.trim() ?? '';
+    const venue   = nextGig.item.querySelector('.col-venue')?.textContent.trim() ?? '';
+    const meta    = nextGig.item.querySelector('.col-meta')?.textContent.trim() ?? '';
+    const dateStr = nextGig.item.querySelector('.col-key')?.textContent.trim() ?? '';
+    const href    = nextGig.item.querySelector('.accordion-body-inner a')?.href ?? '#';
+    const text    = `Next gig: ${title} — ${venue}, ${meta} — ${dateStr}`;
+    nextGigBar.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
+}
 
 // ── Accordion ─────────────────────────────────────────
 document.querySelectorAll('.accordion-item .table-row').forEach(btn => {

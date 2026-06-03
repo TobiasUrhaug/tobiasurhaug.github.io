@@ -325,6 +325,28 @@ main {
 .accordion-item.past .col-title,
 .accordion-item.past .col-meta { color: var(--rule); }
 
+/* ── Next gig bar ─────────────────────────────────────── */
+
+#next-gig-bar {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0.7rem 2rem;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+#next-gig-bar a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+#next-gig-bar a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 /* ── Footer ───────────────────────────────────────────── */
 
 footer {
