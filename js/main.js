@@ -16,6 +16,17 @@ navLinks.forEach(a => {
 // default to news
 show('news');
 
+// ── Past gigs ─────────────────────────────────────────
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+document.querySelectorAll('.accordion-item').forEach(item => {
+    const keyEl = item.querySelector('.col-key');
+    if (!keyEl) return;
+    const date = new Date(keyEl.textContent.trim());
+    if (!isNaN(date) && date < today) item.classList.add('past');
+});
+
 // ── Accordion ─────────────────────────────────────────
 document.querySelectorAll('.accordion-item .table-row').forEach(btn => {
     btn.addEventListener('click', () => {
