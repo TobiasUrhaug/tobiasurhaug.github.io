@@ -62,6 +62,10 @@ const env = nunjucks.configure(path.join(ROOT, 'templates'), { autoescape: true,
 env.addFilter('md', str => new nunjucks.runtime.SafeString(marked.parse(str ?? '')));
 env.addFilter('displayDate', displayDate);
 
+// First non-empty line as plain text: [text](url) → text, emphasis markers dropped
+env.addFilter('excerpt', str => (str ?? '').split('\n').find(line => line.trim())
+    ?.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '').trim() ?? '');
+
 export function build() {
     const html = env.render('index.njk', loadContent());
     fs.writeFileSync(path.join(ROOT, 'index.html'), html);
