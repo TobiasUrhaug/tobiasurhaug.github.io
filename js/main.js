@@ -22,11 +22,9 @@ today.setHours(0, 0, 0, 0);
 
 let nextGig = null;
 
-document.querySelectorAll('#gigs .accordion-item').forEach(item => {
-    const keyEl = item.querySelector('.col-key');
-    if (!keyEl) return;
-    const date = new Date(keyEl.textContent.trim());
-    if (isNaN(date)) return;
+document.querySelectorAll('#gigs .accordion-item[data-date]').forEach(item => {
+    const [y, m, d] = item.dataset.date.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
     if (date < today) {
         item.classList.add('past');
     } else if (!nextGig || date < nextGig.date) {

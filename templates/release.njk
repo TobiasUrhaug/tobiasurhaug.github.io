@@ -1,0 +1,42 @@
+            <!-- {{ release.id }} -->
+            <div class="accordion-item">
+                <button class="table-row release-cols" aria-expanded="false">
+                    <span class="col-key">{{ release.id }}</span>
+                    <span class="col-title">{{ release.title }}</span>
+                    <span class="col-format">{{ release.format }}</span>
+                    <span class="col-meta">{{ release.date | displayDate }}</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="release-body-inner">
+                        <div class="release-info">
+                            {{ release.body | md }}
+                            {%- if release.tracklist %}
+                            <ol class="tracklist">
+                                {%- for track in release.tracklist %}
+                                <li><span class="track-num">{{ loop.index }}.</span> {{ track }}</li>
+                                {%- endfor %}
+                            </ol>
+                            {%- endif %}
+                            {%- if release.bandcamp %}
+                            <div class="release-player">
+                                {%- if release.bandcamp.startsWith('track=') %}
+                                <iframe src="https://bandcamp.com/EmbeddedPlayer/{{ release.bandcamp }}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" style="height:120px;" seamless></iframe>
+                                {%- else %}
+                                <iframe src="https://bandcamp.com/EmbeddedPlayer/{{ release.bandcamp }}/size=large/bgcol=ffffff/linkcol=0687f5/artwork=small/transparent=true/" seamless></iframe>
+                                {%- endif %}
+                            </div>
+                            {%- endif %}
+                        </div>
+                        {%- if release.covers.length == 1 %}
+                        <img class="release-cover" src="{{ release.covers[0] }}" alt="{{ release.title }} artwork">
+                        {%- elif release.covers.length > 1 %}
+                        <div class="release-covers">
+                            {%- for cover in release.covers %}
+                            <img class="release-cover" src="{{ cover }}" alt="{{ release.title }} {{ ['Side A', 'Side B'][loop.index0] or 'artwork' }}">
+                            {%- endfor %}
+                        </div>
+                        {%- endif %}
+                    </div>
+                </div>
+            </div>

@@ -1,0 +1,22 @@
+            <div class="accordion-item" data-date="{{ gig.date }}">
+                <button class="table-row gig-cols" aria-expanded="false">
+                    <span class="col-key">{{ gig.date | displayDate }}</span>
+                    <span class="col-title">{{ gig.title }}</span>
+                    <span class="col-venue">{{ gig.venue }}</span>
+                    <span class="col-meta">{{ gig.location }}</span>
+                    <span class="col-toggle">+</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                        {%- if gig.image %}
+                        <img src="{{ gig.image }}" alt="{{ gig.title }} poster" style="max-width:100%;margin-bottom:1rem;">
+                        {%- endif %}
+                        {%- if gig.text %}
+                        {{ gig.text | md }}
+                        {%- endif %}
+                        {%- if gig.link %}
+                        <p><a href="{{ gig.link }}">{{ gig.link_label or 'Event page' }}</a></p>
+                        {%- endif %}
+                    </div>
+                </div>
+            </div>

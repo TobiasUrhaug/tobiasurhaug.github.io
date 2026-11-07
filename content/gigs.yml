@@ -1,0 +1,67 @@
+# One entry per gig. Order doesn't matter — the build sorts by date.
+# Fields: date (YYYY-MM-DD), title, venue, location,
+#         optional: link, link_label, image, text (Markdown)
+
+- date: 2026-10-14
+  title: LIVE @ Insomnia Festival
+  venue: Tromsø
+  location: Norway
+
+- date: 2026-08-29
+  title: LIVE @ Dub&Dal
+  venue: Kaņepes
+  location: Riga, Latvia
+
+- date: 2026-08-28
+  title: LIVE @ Dub&Dal
+  venue: SODAS
+  location: Vilnius, Lithuania
+
+- date: 2026-08-22
+  title: Workshop and DJ @ Dub&Dal
+  venue: Renate
+  location: Berlin, Germany
+  text: Hosting a polyrhythms workshop supported by Ableton. We will cover what polyrhythms are and how to create them on an Ableton Move. Afterwards I'll spin some dubwise vinyls.
+
+- date: 2026-08-09
+  title: LIVE @ Dub&Dal
+  venue: 90mil
+  location: Berlin, Germany
+
+- date: 2026-07-25
+  title: LIVE @ Outlook Festival
+  venue: Tisno
+  location: Croatia
+
+- date: 2026-07-03
+  title: LIVE @ A Place by the Water
+  venue: Spreefeld Bootshaus
+  location: Berlin, Germany
+  link: https://ra.co/events/2473549
+  link_label: RA event page
+
+- date: 2026-06-19
+  title: LIVE @ La Nature
+  venue: Ardennes
+  location: Belgium
+
+- date: 2026-06-04
+  title: LIVE @ Awkwardly Social
+  venue: Säule/Berghain
+  location: Berlin, Germany
+  image: images/2026-06-04_awksocial_saule.jpg
+  text: Performing live at the Awkwardly Social collective's inaugural Säule show — an evening of low-end pressure and polyrhythmic exploration rooted in global sound system culture, alongside DJ Carlita, mi-el, and N ska.
+  link: https://berghain.berlin/en/event/80829/
+  link_label: Event page
+
+- date: 2026-05-30
+  title: LIVE feat. K'Boko @ Dub&Dal festival
+  venue: MaHalla
+  location: Berlin, Germany
+  link: https://ra.co/events/2408954
+  link_label: RA event page
+
+- date: 2025-10-18
+  title: LIVE feat. Jealous Orgasm @ Dub&Dal
+  venue: MaHalla
+  location: Berlin, Germany

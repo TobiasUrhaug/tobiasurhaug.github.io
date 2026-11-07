@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O.M.Theorem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-wrap">
+            <img src="images/RoundLogo.jpg" alt="O.M.Theorem">
+        </div>
+        <nav>
+            <a href="#" data-section="news">News</a>
+            <a href="#" data-section="releases">Releases</a>
+            <a href="#" data-section="mixes">Mixes</a>
+            <a href="#" data-section="gigs">Gigs</a>
+            <a href="#" data-section="about">About</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ── News ───────────────────────────────────────────── -->
+        <section id="news">
+            {%- for post in news %}
+            <article class="news-post">
+                <p class="news-date">{{ post.date | displayDate }}</p>
+                <div class="page-text">
+                    {{ post.body | md }}
+                </div>
+            </article>
+            {%- endfor %}
+        </section>
+
+        <!-- ── Releases ───────────────────────────────────────── -->
+        <section id="releases">
+            {%- for release in releases %}
+
+{% include "release.njk" %}
+            {%- endfor %}
+
+        </section>
+
+        <!-- ── Mixes ──────────────────────────────────────────── -->
+        <section id="mixes">
+
+            <iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A1219684114&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+
+        </section>
+
+        <!-- ── Gigs ───────────────────────────────────────────── -->
+        <section id="gigs">
+            {%- for gig in gigs %}
+
+{% include "gig.njk" %}
+            {%- endfor %}
+
+        </section>
+
+        <!-- ── About ──────────────────────────────────────────── -->
+        <section id="about">
+            <div class="page-text">
+                {{ about | md }}
+            </div>
+        </section>
+
+    </main>
+
+    <div id="next-gig-bar"></div>
+
+    <hr class="rule-thin">
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://omtheorem.bandcamp.com/">Bandcamp</a>
+            <a href="https://soundcloud.com/omtheorem">Soundcloud</a>
+            <a href="https://www.instagram.com/o.m.theorem/">Instagram</a>
+            <a href="https://dubndal.org/">Dub&amp;Dal</a>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+</body>
+</html>
