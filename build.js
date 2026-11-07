@@ -71,7 +71,8 @@ export function build() {
     fs.writeFileSync(path.join(ROOT, 'index.html'), html);
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// realpath: the script may be run via a symlinked path (e.g. /var → /private/var on macOS)
+if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
     build();
     console.log('Built index.html');
 }

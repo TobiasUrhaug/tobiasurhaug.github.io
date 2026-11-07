@@ -1,5 +1,8 @@
 #!/bin/sh
-# Rebuild index.html from templates/ and content/ so a stale page is never committed.
+# Rebuild index.html from exactly what is being committed (the staged
+# build.js, package.json, content/ and templates/), so the committed page
+# never includes unstaged drafts. The working copy of index.html is left
+# alone and keeps showing the full local preview.
 # Hooks are enabled via `npm install` (see "prepare" in package.json).
 
 if [ ! -d node_modules ]; then
@@ -7,9 +10,17 @@ if [ ! -d node_modules ]; then
     exit 1
 fi
 
-npm run build --silent || {
+snapshot=$(mktemp -d) || exit 1
+trap 'rm -rf "$snapshot"' EXIT
+
+git ls-files -z -- build.js package.json content templates |
+    xargs -0 git checkout-index --prefix="$snapshot/" -- || exit 1
+ln -s "$PWD/node_modules" "$snapshot/node_modules"
+
+node "$snapshot/build.js" > /dev/null || {
     echo "pre-commit: build failed, commit aborted." >&2
     exit 1
 }
 
-git add index.html
+blob=$(git hash-object -w "$snapshot/index.html") &&
+    git update-index --add --cacheinfo "100644,$blob,index.html"
