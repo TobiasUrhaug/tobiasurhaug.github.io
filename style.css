@@ -162,8 +162,36 @@ main {
     margin-top: 1.2rem;
 }
 
-.news-post + .news-post {
-    margin-top: 2.4rem;
+.page-text { overflow-wrap: anywhere; }
+
+.page-text a,
+.release-info a,
+.accordion-body-inner a {
+    color: var(--ink);
+    text-decoration-color: var(--rule);
+    text-underline-offset: 3px;
+}
+
+.page-text a:hover,
+.release-info a:hover,
+.accordion-body-inner a:hover { text-decoration-color: var(--ink); }
+
+/* Older news posts: collapsed rows under the latest post */
+.news-archive {
+    margin-top: 3rem;
+    border-top: 1px solid var(--rule);
+}
+
+.news-cols {
+    grid-template-columns: 5.5rem minmax(0, 1fr) 1.4rem;
+}
+
+.news-cols .col-title {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .news-date {
