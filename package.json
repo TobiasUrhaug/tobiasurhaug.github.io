@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "node build.js",
-    "cms": "node cms/server.js"
+    "cms": "node cms/server.js",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "js-yaml": "^5.5.0",

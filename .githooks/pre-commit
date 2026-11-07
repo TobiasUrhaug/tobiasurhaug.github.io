@@ -1,0 +1,15 @@
+#!/bin/sh
+# Rebuild index.html from templates/ and content/ so a stale page is never committed.
+# Hooks are enabled via `npm install` (see "prepare" in package.json).
+
+if [ ! -d node_modules ]; then
+    echo "pre-commit: node_modules missing — run 'npm install' first." >&2
+    exit 1
+fi
+
+npm run build --silent || {
+    echo "pre-commit: build failed, commit aborted." >&2
+    exit 1
+}
+
+git add index.html

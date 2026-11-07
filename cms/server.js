@@ -130,6 +130,22 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
+// Rebuild when templates or content files are edited by hand
+let rebuildTimer = null;
+for (const dir of ['templates', 'content']) {
+    fs.watch(path.join(ROOT, dir), { recursive: true }, () => {
+        clearTimeout(rebuildTimer);
+        rebuildTimer = setTimeout(() => {
+            try {
+                build();
+                console.log(`Rebuilt index.html (${new Date().toLocaleTimeString()})`);
+            } catch (err) {
+                console.error(`Build failed: ${err.message}`);
+            }
+        }, 200);
+    });
+}
+
 build();
 server.listen(PORT, '127.0.0.1', () => {
     console.log(`CMS running → http://localhost:${PORT}/admin`);
