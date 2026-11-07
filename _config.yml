@@ -1,0 +1,12 @@
+# GitHub Pages (Jekyll) settings.
+# The CMS and its source files are local-only — keep them off the live site.
+exclude:
+  - cms
+  - content
+  - templates
+  - build.js
+  - package.json
+  - package-lock.json
+  - node_modules
+  - .githooks
+  - .gitignore
