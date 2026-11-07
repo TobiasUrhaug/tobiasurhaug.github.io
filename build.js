@@ -57,7 +57,8 @@ export function loadContent() {
 
 // ── Rendering ─────────────────────────────────────────
 
-const env = nunjucks.configure(path.join(ROOT, 'templates'), { autoescape: true });
+// noCache so a running CMS picks up template edits
+const env = nunjucks.configure(path.join(ROOT, 'templates'), { autoescape: true, noCache: true });
 env.addFilter('md', str => new nunjucks.runtime.SafeString(marked.parse(str ?? '')));
 env.addFilter('displayDate', displayDate);
 
