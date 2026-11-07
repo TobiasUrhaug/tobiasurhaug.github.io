@@ -118,6 +118,27 @@
 
         .actions { display: flex; gap: 0.75rem; align-items: center; }
 
+        .publish-tab { margin-left: auto; }
+        #pending:not(:empty) {
+            display: inline-block;
+            min-width: 1.5em;
+            padding: 0 0.4em;
+            background: var(--ink);
+            color: var(--paper);
+            border-radius: 1em;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .notice { padding: 0.7rem 0.9rem; border-left: 3px solid var(--ink); background: var(--paper); font-size: 12px; }
+        .notice.warn { border-color: var(--err); }
+        .changes { list-style: none; display: grid; gap: 0.2rem; }
+        .changes li::before { content: '→ '; color: var(--mid); }
+        .files { display: grid; gap: 0.3rem; }
+        .files label { display: flex; gap: 0.5rem; align-items: baseline; font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 12px; }
+        .files input { width: auto; }
+        .tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); min-width: 5.5em; }
+
         footer.note { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 12px; color: var(--mid); }
         code { background: var(--wash); padding: 0 0.3em; }
 
@@ -141,6 +162,7 @@
         <button data-tab="releases">Releases</button>
         <button data-tab="news">News</button>
         <button data-tab="about">About</button>
+        <button data-tab="publish" class="publish-tab">Publish <span id="pending"></span></button>
     </nav>
 
     <div id="status" role="status"></div>
@@ -149,8 +171,7 @@
 
     <footer class="note">
         Saving writes to <code>content/</code> and rebuilds <code>index.html</code>.
-        When you're happy with the preview, commit and push as usual
-        (<code>git add -A &amp;&amp; git commit -m "…" &amp;&amp; git push</code>).
+        When you're happy with the preview, use <strong>Publish</strong> to commit and push.
     </footer>
 
 </div>
@@ -215,6 +236,7 @@ async function save(fn, successMsg) {
         editing = null;
         setStatus(`${successMsg} — index.html rebuilt.`, 'ok');
         render();
+        refreshPending();
     } catch (err) {
         setStatus(`Error: ${err.message}`, 'err');
         buttons.forEach(b => b.disabled = false);
@@ -445,6 +467,76 @@ function aboutForm() {
         </form>`;
 }
 
+// ── Publish ───────────────────────────────────────────
+
+let publishState = null;
+
+async function refreshPending() {
+    try {
+        publishState = await api('GET', '/api/publish');
+        const n = publishState.files.filter(f => f.file !== 'index.html').length;
+        document.getElementById('pending').textContent = n || (publishState.unpushed ? '↑' : '');
+    } catch (err) {
+        document.getElementById('pending').textContent = '';
+    }
+}
+
+function publishForm(s) {
+    const files = s.files.filter(f => f.file !== 'index.html');
+    const nothing = files.length === 0 && !s.unpushed;
+    const branchNote = s.live
+        ? `<p class="notice">Branch <strong>master</strong> — pushing updates the live site (usually within a minute or two).</p>`
+        : `<p class="notice warn">You're on branch <strong>${esc(s.branch)}</strong>. Pushing here does <strong>not</strong> update the live site — that only happens from <strong>master</strong>.</p>`;
+    const unpushedNote = s.unpushed
+        ? `<p class="notice">${s.unpushed} earlier commit${s.unpushed > 1 ? 's' : ''} not on GitHub yet will be pushed too.</p>` : '';
+
+    if (nothing) {
+        return `<form><h2>Publish</h2>${branchNote}<p class="empty">Everything is committed and pushed.</p></form>`;
+    }
+
+    return `
+        <form>
+            <h2>Publish</h2>
+            ${branchNote}
+            ${unpushedNote}
+            ${s.changes.length && files.length ? `<div><strong>Changes</strong><ul class="changes">${s.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>` : ''}
+            ${files.length ? `
+            <div class="files"><strong>Files to commit</strong>
+                ${files.map(f => `<label><input type="checkbox" name="file" value="${esc(f.file)}" checked>
+                    <span class="tag">${f.status}</span>${esc(f.file)}</label>`).join('')}
+            </div>
+            ${area('message', 'Commit message', s.message, { required: true, hint: 'first line is the summary' })}` : ''}
+            <div class="actions">
+                <button class="btn primary" type="submit">${files.length ? 'Commit &amp; push' : 'Push'}</button>
+                <button class="btn" type="button" data-action="refresh">Refresh</button>
+            </div>
+        </form>`;
+}
+
+async function renderPublish() {
+    view.innerHTML = '<p class="empty">Checking git status…</p>';
+    await refreshPending();
+    if (tab !== 'publish') return;
+    view.innerHTML = publishState ? publishForm(publishState) : '<p class="empty">Could not read git status.</p>';
+}
+
+async function submitPublish(form) {
+    const files = [...form.querySelectorAll('input[name=file]:checked')].map(i => i.value);
+    const message = form.elements.message?.value ?? '';
+    const target = publishState.live ? 'the live site (master)' : `branch ${publishState.branch}`;
+    if (!confirm(`${files.length ? `Commit ${files.length} file${files.length > 1 ? 's' : ''} and push` : 'Push'} to ${target}?`)) return;
+
+    view.querySelectorAll('button').forEach(b => b.disabled = true);
+    setStatus('Publishing… (committing and pushing to GitHub)');
+    try {
+        const r = await api('POST', '/api/publish', { message, files });
+        setStatus(`${r.commit ? `Committed ${r.commit} and pushed` : 'Pushed'} to ${r.branch}${r.live ? ' — the live site updates in a minute or two.' : '.'}`, 'ok');
+    } catch (err) {
+        setStatus(`Error: ${err.message}`, 'err');
+    }
+    renderPublish();
+}
+
 // ── Wiring ────────────────────────────────────────────
 
 const KINDS = {
@@ -458,6 +550,10 @@ function render() {
 
     if (tab === 'about') {
         view.innerHTML = aboutForm();
+        return;
+    }
+    if (tab === 'publish') {
+        renderPublish();
         return;
     }
 
@@ -483,7 +579,8 @@ view.addEventListener('click', e => {
     const action = e.target.closest('[data-action]')?.dataset.action;
     const row = e.target.closest('tr[data-index]');
 
-    if (action === 'new') { editing = { index: -1 }; setStatus(''); render(); }
+    if (action === 'refresh') { setStatus(''); renderPublish(); }
+    else if (action === 'new') { editing = { index: -1 }; setStatus(''); render(); }
     else if (row) { editing = { index: Number(row.dataset.index) }; setStatus(''); render(); }
     else if (action === 'cancel') { editing = null; setStatus(''); render(); }
     else if (action === 'delete') {
@@ -502,6 +599,10 @@ view.addEventListener('click', e => {
 view.addEventListener('submit', e => {
     e.preventDefault();
     const form = e.target;
+    if (tab === 'publish') {
+        submitPublish(form);
+        return;
+    }
     if (tab === 'about') {
         save(() => api('PUT', '/api/about', { body: form.elements.body.value }), 'About saved');
         return;
@@ -513,7 +614,7 @@ view.addEventListener('submit', e => {
 window.addEventListener('beforeunload', e => { if (editing) e.preventDefault(); });
 
 api('GET', '/api/content')
-    .then(c => { content = c; render(); })
+    .then(c => { content = c; render(); refreshPending(); })
     .catch(err => setStatus(`Could not load content: ${err.message}`, 'err'));
 </script>
 </body>

@@ -4,10 +4,13 @@ import path from 'node:path';
 import * as yaml from 'js-yaml';
 import sharp from 'sharp';
 import { ROOT, CONTENT, build, loadContent, stringifyFrontMatter } from '../build.js';
+import { publish, publishStatus } from './publish.js';
 
 const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_HTML = path.join(ROOT, 'cms', 'admin.html');
 const SLUG = /^[a-z0-9][a-z0-9-]*$/;
+
+let publishing = false;
 
 const GIGS_HEADER = `# One entry per gig. Order doesn't matter — the build sorts by date.
 # Fields: date (YYYY-MM-DD), title, venue, location,
@@ -90,6 +93,19 @@ async function handleApi(req, res, parts) {
     if (slug !== undefined && !SLUG.test(slug)) return send(res, 400, { error: `Bad slug: ${slug}` });
 
     if (req.method === 'GET' && resource === 'content') return send(res, 200, loadContent());
+
+    if (resource === 'publish') {
+        if (req.method === 'GET') return send(res, 200, await publishStatus());
+        if (req.method !== 'POST') return send(res, 405, { error: 'Method not allowed' });
+        if (publishing) return send(res, 409, { error: 'A publish is already running' });
+        publishing = true;
+        try {
+            const result = await publish(await readJson(req));
+            return send(res, 200, { ...result, status: await publishStatus() });
+        } finally {
+            publishing = false;
+        }
+    }
 
     if (req.method === 'POST' && resource === 'images') {
         const { name, dataUrl } = await readJson(req);
