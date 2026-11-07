@@ -18,6 +18,7 @@
     /* Typography */
     --font-serif: 'IM Fell English', Georgia, serif;
     --font-mono: 'Courier Prime', 'Courier New', monospace;
+    --font-sans: Arial, Helvetica, sans-serif;
 
     /* Text page styles */
     --text-body-size: 1.05rem;
@@ -27,6 +28,7 @@
 
     /* Table styles */
     --table-meta-size: 10px;
+    --table-place-size: 9.5px;
     --table-meta-color: var(--mid);
     --table-title-size: 1.02rem;
     --table-title-color: var(--ink);
@@ -195,6 +197,7 @@ main {
     width: 100%;
     background: var(--paper);
     border: none;
+    font-family: var(--font-sans);
     text-align: left;
     cursor: pointer;
     color: inherit;
@@ -258,7 +261,7 @@ main {
 /* ── Releases ─────────────────────────────────────────── */
 
 .release-cols {
-    grid-template-columns: 5.5rem 1fr 3.5rem 3rem 1.4rem;
+    grid-template-columns: 5.5rem 1fr 4rem 4.75rem 1.4rem;
 }
 
 .col-format {
@@ -324,19 +327,38 @@ main {
     grid-template-columns: 5.5rem 1fr auto 1.4rem;
 }
 
-.gig-cols {
-    grid-template-columns: 5.5rem 1fr auto auto 1.4rem;
+/* Gig rows share one set of columns (subgrid), so venues and locations
+   line up like a table; each column fits its longest entry up to a cap,
+   and longer text wraps. */
+#gigs.active {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) fit-content(8.5rem) fit-content(8rem) 1.4rem;
+    column-gap: var(--table-col-gap);
+    align-content: start;
 }
 
-.col-venue {
-    font-size: var(--table-meta-size);
-    letter-spacing: 0.08em;
-    color: var(--mid);
-    white-space: nowrap;
+#gigs .accordion-item,
+#gigs .gig-cols {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
 }
+
+#gigs .accordion-body { grid-column: 1 / -1; }
+
+.gig-cols .col-venue,
+.gig-cols .col-meta {
+    font-size: var(--table-place-size);
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+.gig-cols .col-venue { color: var(--ink-soft); }
 
 .accordion-item.past .col-key,
 .accordion-item.past .col-title,
+.accordion-item.past .col-venue,
 .accordion-item.past .col-meta { color: var(--rule); }
 
 /* ── Next gig bar ─────────────────────────────────────── */
@@ -416,11 +438,16 @@ footer {
 
     .release-cols,
     .mix-cols,
-    .gig-cols { grid-template-columns: 4.5rem 1fr 1.4rem; }
+    .gig-cols { grid-template-columns: 5.5rem 1fr 1.4rem; }
+
+    /* No room for venue/location columns: stack them under the title */
+    #gigs.active { grid-template-columns: 5.5rem minmax(0, 1fr) 1.4rem; }
+    .gig-cols .col-venue,
+    .gig-cols .col-meta { grid-column: 2; }
+    .gig-cols .col-toggle { grid-column: 3; grid-row: 1; }
 
     .col-format,
-    .col-venue,
-    .col-meta { display: none; }
+    .release-cols .col-meta { display: none; }
 
     .release-body-inner { grid-template-columns: 1fr; }
 
